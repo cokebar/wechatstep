@@ -12,7 +12,7 @@ def get_config():
     global PassWord
     global StepNum
     global ScheduleTime
-    global Device_id
+    global DeviceId
     
     f = open('config.json', 'r')
     content = f.read()
@@ -107,7 +107,7 @@ def login(PhoneNum, PassWord):
         "app_version": "4.6.0",
         "code": f"{code}",
         "country_code": "CN",
-        "device_id": Device_id,
+        "device_id": DeviceId,
         # "device_id": "2C8B4939-0CCD-4E94-8CBA-CB8EA6E613A1",
         "device_model": "phone",
         "grant_type": "access_token",
