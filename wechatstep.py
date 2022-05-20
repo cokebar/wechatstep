@@ -192,11 +192,6 @@ def set_step(PhoneNum, PassWord, StepNum):
 
 def job():
     print("Start Working")
-    AgentId = ""
-    Secret = ""
-    CompanyId = ""
-    Touser = ""
-    
     user = [
         {
             "PhoneNum": PhoneNum,  # 手机号
