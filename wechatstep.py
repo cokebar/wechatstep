@@ -42,10 +42,10 @@ def get_config():
         DeviceId = os.getenv('DeviceId')
 
     print ("PhoneNum: ", PhoneNum)
-    print ("PassWord: ", PassWord)
-    print ("StepNum: ", StepNum)
+    #print ("PassWord: ", PassWord)
+    #print ("StepNum: ", StepNum)
     print ("ScheduleTime: ", ScheduleTime)
-    print ("DeviceId: ", DeviceId)
+    #print ("DeviceId: ", DeviceId)
 
 # 获取步数
 def get_step_num(StepNum):
