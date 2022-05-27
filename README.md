@@ -7,13 +7,13 @@
 
 ### 修改配置
 
-- 修改配置可通过两种方式：配置文件(config.json)、环境变量
-- 参数说明：
-- PhoneNum：登录手机号
-- PassWord：密码
-- StepNum：需要刷的步数，格式"XXXXX-YYYYY"，则会在XXXXX-YYYYY之间随机一个数字；格式"XXXXX"，则会固定步数"XXXXX"；
+- 配置文件(config.json)参数说明：
 - ScheduleTime：定时器，每天哪个时间运行，格式"HH:MM"。如果仅运行一次，则留空；
-- DeviceId：设备唯一码，建议使用UUID生成器自行生成一个。
+- Tag：为该账户起一个好识别的名称，无实际作用；
+- PhoneNum：Zepp Life登录手机号；
+- PassWord：Zepp Life密码；
+- StepNum：需要刷的步数，格式"XXXXX-YYYYY"，则会在XXXXX-YYYYY之间随机一个数字；格式"XXXXX"，则会固定步数"XXXXX"；
+- DeviceId：设备唯一码，程序自动按账户随机生成，无需自行填写。
 
 ### 本地运行
 
@@ -25,8 +25,8 @@
 ### Docker
 
 - 暂时仅为简单说明
-- 生成镜像：docker build .
-- 挂载config.json，或者使用环境变量来进行配置
+- 生成镜像：docker build -t cokebar/wechatstep .
+- 复制config.json到宿主机按需编辑，并将其挂载到容器/usr/src/app/config.json
 
 **参考：**
 https://blog.csdn.net/Jaeger_Java/article/details/109631118
