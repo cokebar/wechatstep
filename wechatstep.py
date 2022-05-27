@@ -35,8 +35,7 @@ def get_config():
     if os.getenv('ScheduleTime'):
         ScheduleTime = os.getenv('ScheduleTime')
 
-    print ("user: ", user)
-    print ("ScheduleTime: ", ScheduleTime)
+    #print ("user: ", user)
 
 # 获取步数
 def get_step_num(StepNum):
@@ -192,6 +191,7 @@ def job():
 def main(event, context):
     get_config()
     if ScheduleTime:
+        print ("ScheduleTime: ", ScheduleTime)
         print("Waiting Next Job...")
         schedule.every().day.at(ScheduleTime).do(job)
         while True:
