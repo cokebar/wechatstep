@@ -1,7 +1,19 @@
 {
-    "PhoneNum": "1500000000",
-    "PassWord": "yourpassword",
-    "ScheduleTime": "14:12",
-    "StepNum": "10500-20000",
-    "DeviceId": "7E7C7E81-7FBB-44B1-B321-F97502472C5C"
+    "ScheduleTime": "",
+    "user": [
+        {
+            "Tag": "user1",
+            "PhoneNum": "1500000001",
+            "PassWord": "userpassowrd",
+            "StepNum": "10500-20000",
+            "DeviceId": "da47e326-1563-4460-a8ab-1bce4a1bd86f"
+        },
+        {
+            "Tag": "user2",
+            "PhoneNum": "1500000002",
+            "PassWord": "userpassowrd",
+            "StepNum": "10500-20000",
+            "DeviceId": "aa6c8c33-b92f-4937-8f28-ad2274fbce41"
+        }
+    ]
 }

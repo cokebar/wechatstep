@@ -1,51 +1,42 @@
-import requests
-import time
-import re
-import json
-import random
-import os
-import schedule
+import requests, time, re, json, random, os, schedule, uuid
+
+# 检查uuid
+def check_uuid(test_uuid, version =4):
+    try:
+        return uuid.UUID(test_uuid).version == version
+    except ValueError:
+        return False
 
 # 获取配置
 def get_config():
-    global PhoneNum
-    global PassWord
-    global StepNum
     global ScheduleTime
-    global DeviceId
+    global user
+    global config
     
     f = open('config.json', 'r')
-    content = f.read()
-    config_json = json.loads(content)
-    PhoneNum = config_json['PhoneNum']
-    PassWord = config_json['PassWord']
+    config_json = json.loads(f.read())
+    flag_modified = 0
     ScheduleTime = config_json['ScheduleTime']
+    user = config_json['user']
+    f.close()
     
-    if config_json['StepNum']:
-        StepNum = config_json['StepNum']
-    else:
-        StepNum = '10500-25000'
-    if ('DeviceId' in config_json) and config_json['DeviceId']:
-        DeviceId = config_json['DeviceId']
-    else:
-        DeviceId = '2C8B4939-0CCD-4E94-8CBA-CB8EA6E613A1'
+    for line in range(0, len(user)):
+        if (not 'DeviceId' in user[line]) or (not check_uuid(user[line]['DeviceId'],4)):
+            user[line]['DeviceId'] = str(uuid.uuid4())
+            flag_modified = 1
             
-    if os.getenv('PhoneNum'):
-        PhoneNum = os.getenv('PhoneNum')
-    if os.getenv('PassWord'):   
-        PassWord = os.getenv('PassWord')
-    if os.getenv('StepNum'):
-        StepNum = os.getenv('StepNum')
+    if flag_modified:
+        config_json['user'] = user
+        f = open('config.json', 'w')
+        content = json.dumps(config_json, sort_keys=False, indent=4, separators=(',', ': '))
+        f.write(content)
+        f.close()
+    
     if os.getenv('ScheduleTime'):
         ScheduleTime = os.getenv('ScheduleTime')
-    if os.getenv('DeviceId'):
-        DeviceId = os.getenv('DeviceId')
 
-    print ("PhoneNum: ", PhoneNum)
-    #print ("PassWord: ", PassWord)
-    #print ("StepNum: ", StepNum)
+    print ("user: ", user)
     print ("ScheduleTime: ", ScheduleTime)
-    #print ("DeviceId: ", DeviceId)
 
 # 获取步数
 def get_step_num(StepNum):
@@ -80,7 +71,7 @@ def get_code(location):
 
 
 # 登录
-def login(PhoneNum, PassWord):
+def login(PhoneNum, PassWord, DeviceId):
     RegUrl = "https://api-user.huami.com/registrations/+86" + PhoneNum + "/tokens"
     Headers = {
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
@@ -108,7 +99,6 @@ def login(PhoneNum, PassWord):
         "code": f"{code}",
         "country_code": "CN",
         "device_id": DeviceId,
-        # "device_id": "2C8B4939-0CCD-4E94-8CBA-CB8EA6E613A1",
         "device_model": "phone",
         "grant_type": "access_token",
         "third_name": "huami_phone",
@@ -146,7 +136,7 @@ def get_app_token(login_token):
 
 
 # 改步数
-def set_step(PhoneNum, PassWord, StepNum):
+def set_step(PhoneNum, PassWord, StepNum, DeviceId):
     PhoneNum = str(PhoneNum)
     PassWord = str(PassWord)
     StepNum = get_step_num(StepNum)
@@ -156,7 +146,7 @@ def set_step(PhoneNum, PassWord, StepNum):
         return "用户名或密码不能为空！"
 
     login_token = 0
-    login_token, userid = login(PhoneNum, PassWord)
+    login_token, userid = login(PhoneNum, PassWord, DeviceId)
 
     if login_token == 0:
         print("登录失败！")
@@ -192,17 +182,9 @@ def set_step(PhoneNum, PassWord, StepNum):
 
 def job():
     print("Start Working")
-    user = [
-        {
-            "PhoneNum": PhoneNum,  # 手机号
-            "PassWord": PassWord,  # 密码
-            "StepNum": StepNum,  # 步数 固定步数 随机步数之间用[-]连接
-        }
-    ]
-
     Push = ""
     for line in range(0, len(user)):
-        Push += set_step(user[line]["PhoneNum"], user[line]["PassWord"], user[line]["StepNum"])
+        Push += set_step(user[line]["PhoneNum"], user[line]["PassWord"], user[line]["StepNum"], user[line]["DeviceId"])
     print(Push)
     if ScheduleTime:
         print("Waiting Next Job...")
