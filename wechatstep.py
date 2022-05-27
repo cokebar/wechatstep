@@ -113,13 +113,7 @@ def login(PhoneNum, PassWord, DeviceId):
 
 # 获取时间戳
 def get_time():
-    Url = 'http://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp'
-    Headers = {
-        'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 9; MI 6 MIUI/20.6.18)'
-    }
-    Res = requests.get(Url, headers=Headers).json()
-    t = Res['data']['t']
-    return t
+    return int(time.time())
 
 
 # 获取app_token
