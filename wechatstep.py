@@ -196,4 +196,4 @@ def main(event, context):
         job()
 
 if __name__ ==  "__main__":
-    main('event', 'context')  # 这行用于本地调试 使用云函数可以注释掉
+    main('event', 'context')
